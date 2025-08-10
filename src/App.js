@@ -3,7 +3,11 @@ import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import FilterSidebar from './components/filters/FilterSidebar';
 import TenderList from './components/tenders/TenderList';
+import SmartSearchBar from './components/ai/SmartSearchBar';
+import AIDashboard from './components/ai/AIDashboard';
+import AlertConfig from './components/ai/AlertConfig';
 import { mockTenders } from './data/mockData';
+import apiService from './services/api';
 import './styles/globals.css';
 
 function App() {
@@ -11,6 +15,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [tenders, setTenders] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [matchScores, setMatchScores] = useState({});
+  const [showAIDashboard, setShowAIDashboard] = useState(false);
+  const [showAlertConfig, setShowAlertConfig] = useState(false);
   const [filters, setFilters] = useState({
     searchQuery: '',
     state: '',
@@ -68,7 +75,30 @@ function App() {
     });
   };
 
+  const handleSmartSearch = async (query) => {
+    try {
+      setIsLoading(true);
+      const response = await apiService.smartSearch(query);
+      if (response.success) {
+        setTenders(response.data.tenders);
+        setMatchScores(response.data.match_scores || {});
+      }
+    } catch (error) {
+      console.error('Smart search failed:', error);
+      // Fallback to regular search
+      setFilters(prev => ({ ...prev, searchQuery: query }));
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  const handleShowAIDashboard = () => {
+    setShowAIDashboard(true);
+  };
+
+  const handleShowAlertConfig = () => {
+    setShowAlertConfig(true);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -76,10 +106,12 @@ function App() {
       <Header 
         onToggleSidebar={toggleSidebar}
         isSidebarOpen={isSidebarOpen}
+        onShowAIDashboard={handleShowAIDashboard}
+        onShowAlertConfig={handleShowAlertConfig}
       />
 
       {/* Main Content */}
-      <div className="flex-1 flex">
+      <div className="flex-1 flex relative">
         {/* Filter Sidebar */}
         <FilterSidebar
           isOpen={isSidebarOpen}
@@ -89,14 +121,22 @@ function App() {
         />
 
         {/* Main Content Area */}
-        <main className="flex-1 p-4 lg:p-6">
+        <main className={`flex-1 p-4 lg:p-6 transition-all duration-300 ${
+          isSidebarOpen ? 'lg:ml-80' : 'lg:ml-0'
+        }`}>
           <div className="max-w-7xl mx-auto">
+            {/* Smart Search Bar */}
+            <div className="mb-6">
+              <SmartSearchBar onSearch={handleSmartSearch} />
+            </div>
+
             <TenderList
               tenders={tenders}
               filters={filters}
               isLoading={isLoading}
               onSaveToFavorites={handleSaveToFavorites}
               favorites={favorites}
+              matchScores={matchScores}
             />
           </div>
         </main>
@@ -104,6 +144,27 @@ function App() {
 
       {/* Footer */}
       <Footer />
+
+      {/* AI Dashboard Modal */}
+      {showAIDashboard && (
+        <AIDashboard
+          isOpen={showAIDashboard}
+          onClose={() => setShowAIDashboard(false)}
+        />
+      )}
+
+      {/* Alert Configuration Modal */}
+      {showAlertConfig && (
+        <AlertConfig
+          onClose={(success) => {
+            setShowAlertConfig(false);
+            if (success) {
+              // Optionally refresh alerts or show success message
+              console.log('Alert configured successfully');
+            }
+          }}
+        />
+      )}
 
       {/* Loading Overlay */}
       {isLoading && (

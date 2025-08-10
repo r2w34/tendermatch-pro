@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Menu, X, Search, Bell, User } from 'lucide-react';
+import { Menu, X, Search, Bell, User, Brain, BarChart3 } from 'lucide-react';
 
-const Header = ({ onToggleSidebar, isSidebarOpen }) => {
+const Header = ({ onToggleSidebar, isSidebarOpen, onShowAIDashboard, onShowAlertConfig }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   return (
@@ -44,7 +44,25 @@ const Header = ({ onToggleSidebar, isSidebarOpen }) => {
           </div>
 
           {/* Right section */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            {/* AI Dashboard */}
+            <button 
+              onClick={onShowAIDashboard}
+              className="p-2 text-purple-600 hover:text-purple-900 hover:bg-purple-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors"
+              title="AI Dashboard"
+            >
+              <BarChart3 size={20} />
+            </button>
+
+            {/* AI Alerts */}
+            <button 
+              onClick={onShowAlertConfig}
+              className="p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+              title="Configure AI Alerts"
+            >
+              <Brain size={20} />
+            </button>
+
             {/* Notifications */}
             <button className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
               <Bell size={20} />

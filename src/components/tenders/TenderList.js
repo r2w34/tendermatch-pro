@@ -4,8 +4,14 @@ import TenderCard from './TenderCard';
 import TenderModal from './TenderModal';
 import LoadingSpinner from '../common/LoadingSpinner';
 import EmptyState from '../common/EmptyState';
+import TenderAnalysis from '../ai/TenderAnalysis';
+import BidAssistant from '../ai/BidAssistant';
+import apiService from '../../services/api';
 
-const TenderList = ({ tenders, filters, isLoading, onSaveToFavorites, favorites = [] }) => {
+const TenderList = ({ tenders, filters, isLoading, onSaveToFavorites, favorites = [], matchScores = {} }) => {
+  const [aiAnalysisOpen, setAiAnalysisOpen] = useState(false);
+  const [bidAssistantOpen, setBidAssistantOpen] = useState(false);
+  const [selectedTenderForAI, setSelectedTenderForAI] = useState(null);
   const [selectedTender, setSelectedTender] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
@@ -101,6 +107,32 @@ const TenderList = ({ tenders, filters, isLoading, onSaveToFavorites, favorites 
     setSelectedTender(null);
   };
 
+  const handleAIAnalysis = (tenderId) => {
+    const tender = tenders.find(t => t.id === tenderId);
+    if (tender) {
+      setSelectedTenderForAI(tender);
+      setAiAnalysisOpen(true);
+    }
+  };
+
+  const handleBidAssistance = (tenderId) => {
+    const tender = tenders.find(t => t.id === tenderId);
+    if (tender) {
+      setSelectedTenderForAI(tender);
+      setBidAssistantOpen(true);
+    }
+  };
+
+  const handleCloseAIAnalysis = () => {
+    setAiAnalysisOpen(false);
+    setSelectedTenderForAI(null);
+  };
+
+  const handleCloseBidAssistant = () => {
+    setBidAssistantOpen(false);
+    setSelectedTenderForAI(null);
+  };
+
   const getGridColumns = () => {
     return 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3';
   };
@@ -165,6 +197,9 @@ const TenderList = ({ tenders, filters, isLoading, onSaveToFavorites, favorites 
               onViewDetails={handleViewDetails}
               onSaveToFavorites={onSaveToFavorites}
               isFavorite={favorites.includes(tender.id)}
+              onAIAnalysis={handleAIAnalysis}
+              onBidAssistance={handleBidAssistance}
+              matchScore={matchScores[tender.id]}
             />
           ))}
         </div>
@@ -187,6 +222,24 @@ const TenderList = ({ tenders, filters, isLoading, onSaveToFavorites, favorites 
         onSaveToFavorites={onSaveToFavorites}
         isFavorite={selectedTender && favorites.includes(selectedTender.id)}
       />
+
+      {/* AI Analysis Modal */}
+      {selectedTenderForAI && (
+        <TenderAnalysis
+          tender={selectedTenderForAI}
+          isOpen={aiAnalysisOpen}
+          onClose={handleCloseAIAnalysis}
+        />
+      )}
+
+      {/* Bid Assistant Modal */}
+      {selectedTenderForAI && (
+        <BidAssistant
+          tender={selectedTenderForAI}
+          isOpen={bidAssistantOpen}
+          onClose={handleCloseBidAssistant}
+        />
+      )}
     </div>
   );
 };

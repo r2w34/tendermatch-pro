@@ -16,9 +16,12 @@ const tenderRoutes = require('./routes/tenders');
 const authRoutes = require('./routes/auth');
 const savedSearchRoutes = require('./routes/savedSearches');
 const scraperRoutes = require('./routes/scraper');
+const aiRoutes = require('./routes/ai');
+const alertRoutes = require('./routes/alerts');
 
 // Import services
 const scraperService = require('./services/scraperService');
+const alertService = require('./services/alertService');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -106,6 +109,8 @@ app.use('/api/tenders', tenderRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/saved-searches', savedSearchRoutes);
 app.use('/api/scraper', scraperRoutes);
+app.use('/api/ai', aiRoutes);
+app.use('/api/alerts', alertRoutes);
 
 // API info endpoint
 app.get('/api', (req, res) => {
@@ -117,7 +122,9 @@ app.get('/api', (req, res) => {
       tenders: '/api/tenders',
       auth: '/api/auth',
       savedSearches: '/api/saved-searches',
-      scraper: '/api/scraper'
+      scraper: '/api/scraper',
+      ai: '/api/ai',
+      alerts: '/api/alerts'
     },
     documentation: 'https://api-docs.tendermatch.pro'
   });
@@ -179,6 +186,12 @@ const startServer = async () => {
       scraperService.setupCronJob();
     }
     
+    // Start alert monitoring
+    if (process.env.NODE_ENV !== 'test') {
+      console.log('Starting alert monitoring...');
+      alertService.startMonitoring();
+    }
+    
     // Start HTTP server
     const server = app.listen(PORT, '0.0.0.0', () => {
       console.log(`
@@ -189,6 +202,8 @@ const startServer = async () => {
 📚 API Docs: http://localhost:${PORT}/api
 🔒 CORS Origin: ${process.env.FRONTEND_URL}
 ⏰ Scraping Schedule: ${process.env.SCRAPING_INTERVAL || '0 2 * * *'}
+🤖 AI Features: Enabled (Gemini API)
+🚨 Alert Monitoring: Active
       `);
     });
 

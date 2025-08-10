@@ -266,6 +266,90 @@ class ApiService {
   async getScraperStats() {
     return this.get('/scraper/stats');
   }
+
+  // AI methods
+  async analyzeTender(tenderId) {
+    return this.get(`/ai/analyze/${tenderId}`);
+  }
+
+  async matchTender(tenderId) {
+    return this.get(`/ai/match/${tenderId}`);
+  }
+
+  async analyzeDocument(file) {
+    const formData = new FormData();
+    formData.append('document', file);
+    
+    return this.request('/ai/analyze-document', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.token}`,
+        // Don't set Content-Type for FormData, let browser set it
+      },
+      body: formData
+    });
+  }
+
+  async generateBidAssistance(tenderId) {
+    return this.get(`/ai/bid-assistance/${tenderId}`);
+  }
+
+  async smartSearch(searchData) {
+    return this.post('/ai/smart-search', searchData);
+  }
+
+  async getDashboardInsights() {
+    return this.get('/ai/insights');
+  }
+
+  async batchAnalyzeTenders(tenderIds) {
+    return this.post('/ai/analyze/batch', { tender_ids: tenderIds });
+  }
+
+  async getUsageStats() {
+    return this.get('/ai/usage');
+  }
+
+  async getAIHealth() {
+    return this.get('/ai/health');
+  }
+
+  // Alert methods
+  async configureAlert(alertConfig) {
+    return this.post('/alerts/configure', alertConfig);
+  }
+
+  async getUserAlerts() {
+    return this.get('/alerts');
+  }
+
+  async updateAlert(alertId, updates) {
+    return this.put(`/alerts/${alertId}`, updates);
+  }
+
+  async deleteAlert(alertId) {
+    return this.delete(`/alerts/${alertId}`);
+  }
+
+  async getAlertHistory(limit = 50) {
+    return this.get('/alerts/history', { limit });
+  }
+
+  async getAlertStats() {
+    return this.get('/alerts/stats');
+  }
+
+  async testAlert(alertId) {
+    return this.post(`/alerts/${alertId}/test`);
+  }
+
+  async toggleAlertMonitoring(action) {
+    return this.post('/alerts/monitoring/toggle', { action });
+  }
+
+  async getAlertMonitoringStatus() {
+    return this.get('/alerts/monitoring/status');
+  }
 }
 
 // Create singleton instance

@@ -11,7 +11,7 @@ class NotificationService {
   // Initialize email transporter
   initializeTransporter() {
     if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
-      this.transporter = nodemailer.createTransporter({
+      this.transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST,
         port: parseInt(process.env.SMTP_PORT) || 587,
         secure: false, // true for 465, false for other ports
@@ -342,6 +342,60 @@ class NotificationService {
     return await this.sendEmail(userEmail, subject, htmlContent);
   }
 
+  // Send SMS notification (placeholder - integrate with SMS service)
+  async sendSMS(phoneNumber, message) {
+    try {
+      // This is a placeholder implementation
+      // In production, integrate with services like Twilio, AWS SNS, or local SMS providers
+      
+      console.log(`SMS would be sent to ${phoneNumber}: ${message}`);
+      
+      // Simulate SMS sending
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            success: true,
+            messageId: `sms_${Date.now()}`,
+            provider: 'mock'
+          });
+        }, 100);
+      });
+    } catch (error) {
+      console.error('Failed to send SMS:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  // Send push notification (placeholder - integrate with push service)
+  async sendPushNotification(userId, notification) {
+    try {
+      // This is a placeholder implementation
+      // In production, integrate with services like Firebase Cloud Messaging, OneSignal, etc.
+      
+      console.log(`Push notification would be sent to user ${userId}:`, notification);
+      
+      // Simulate push notification
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            success: true,
+            messageId: `push_${Date.now()}`,
+            provider: 'mock'
+          });
+        }, 100);
+      });
+    } catch (error) {
+      console.error('Failed to send push notification:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
   // Test email configuration
   async testEmailConfiguration() {
     if (!this.transporter) {
@@ -357,6 +411,20 @@ class NotificationService {
     `;
 
     return await this.sendEmail(testEmail, subject, htmlContent);
+  }
+
+  // Get notification statistics
+  getStats() {
+    return {
+      email_configured: !!this.transporter,
+      sms_configured: false, // Update when SMS is implemented
+      push_configured: false, // Update when push notifications are implemented
+      services: {
+        email: this.transporter ? 'active' : 'inactive',
+        sms: 'mock',
+        push: 'mock'
+      }
+    };
   }
 }
 

@@ -68,8 +68,8 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
 
       {/* Sidebar */}
       <div className={`
-        fixed lg:static inset-y-0 left-0 z-50 w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out
-        ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        fixed inset-y-0 left-0 z-50 w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:shadow-none lg:border-r lg:border-gray-200
       `}>
         <div className="flex items-center justify-between p-4 border-b border-gray-200 lg:hidden">
