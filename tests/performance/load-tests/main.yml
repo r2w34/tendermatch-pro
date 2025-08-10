@@ -1,0 +1,287 @@
+# Artillery Load Testing Configuration for TenderMatch Pro
+config:
+  target: 'http://localhost:53337'
+  phases:
+    # Warm-up phase
+    - duration: 60
+      arrivalRate: 5
+      name: "Warm-up"
+    
+    # Ramp-up phase
+    - duration: 300
+      arrivalRate: 10
+      rampTo: 50
+      name: "Ramp-up to normal load"
+    
+    # Sustained load phase
+    - duration: 600
+      arrivalRate: 50
+      name: "Sustained normal load"
+    
+    # Peak load phase
+    - duration: 300
+      arrivalRate: 50
+      rampTo: 100
+      name: "Peak load simulation"
+    
+    # Cool-down phase
+    - duration: 120
+      arrivalRate: 100
+      rampTo: 10
+      name: "Cool-down"
+
+  # Payload configuration for Indian market
+  payload:
+    path: "../fixtures/sample-tenders/mock-tenders.json"
+    fields:
+      - "tenders"
+    
+  # Variables for Indian context
+  variables:
+    indianStates:
+      - "Maharashtra"
+      - "Karnataka"
+      - "Tamil Nadu"
+      - "Gujarat"
+      - "Rajasthan"
+      - "Delhi"
+      - "West Bengal"
+      - "Uttar Pradesh"
+    
+    searchTerms:
+      - "IT Equipment"
+      - "Construction"
+      - "Medical Equipment"
+      - "Software Development"
+      - "Office Supplies"
+      - "Transportation"
+      - "Consultancy Services"
+    
+    budgetRanges:
+      - { min: 100000, max: 1000000 }      # 1 Lakh to 10 Lakh
+      - { min: 1000000, max: 10000000 }    # 10 Lakh to 1 Crore
+      - { min: 10000000, max: 50000000 }   # 1 Crore to 5 Crore
+
+  # Performance thresholds
+  ensure:
+    thresholds:
+      - http.response_time.p95: 3000  # 95% of requests under 3 seconds
+      - http.response_time.p99: 5000  # 99% of requests under 5 seconds
+      - http.response_time.median: 1000  # Median response time under 1 second
+      - http.codes.200: 95  # 95% success rate
+      - http.codes.4xx: 2   # Less than 2% client errors
+      - http.codes.5xx: 1   # Less than 1% server errors
+
+  # HTTP configuration
+  http:
+    timeout: 30
+    pool: 50  # Connection pool size
+    
+  # Plugins for enhanced monitoring
+  plugins:
+    metrics-by-endpoint:
+      useOnlyRequestNames: true
+    
+    # Memory usage monitoring
+    memory-usage: {}
+    
+    # Custom metrics for Indian market
+    custom-metrics:
+      - name: "search_response_time"
+        unit: "ms"
+      - name: "filter_response_time"
+        unit: "ms"
+      - name: "mobile_response_time"
+        unit: "ms"
+
+# Test scenarios
+scenarios:
+  # Homepage load test
+  - name: "Homepage Load"
+    weight: 30
+    flow:
+      - get:
+          url: "/"
+          headers:
+            Accept-Language: "en-IN,hi-IN;q=0.9,en;q=0.8"
+          capture:
+            - json: "$.tenders.length"
+              as: "tenderCount"
+          expect:
+            - statusCode: 200
+            - contentType: "text/html"
+            - hasHeader: "content-type"
+
+  # Search functionality test
+  - name: "Tender Search"
+    weight: 25
+    flow:
+      - get:
+          url: "/api/tenders"
+          qs:
+            search: "{{ $randomPick(searchTerms) }}"
+            page: "{{ $randomInt(1, 5) }}"
+            limit: 20
+          headers:
+            Authorization: "Bearer test-token"
+            Accept-Language: "en-IN,hi-IN;q=0.9"
+          capture:
+            - json: "$.data.length"
+              as: "searchResults"
+          expect:
+            - statusCode: 200
+            - contentType: "application/json"
+          think: 2
+
+      # View tender details
+      - get:
+          url: "/api/tenders/{{ tenders.0.id }}"
+          headers:
+            Authorization: "Bearer test-token"
+          expect:
+            - statusCode: 200
+
+  # Filter functionality test
+  - name: "Filter Tenders"
+    weight: 20
+    flow:
+      - get:
+          url: "/api/tenders"
+          qs:
+            state: "{{ $randomPick(indianStates) }}"
+            minBudget: "{{ $randomPick(budgetRanges).min }}"
+            maxBudget: "{{ $randomPick(budgetRanges).max }}"
+            category: "IT Equipment"
+            status: "Active"
+          headers:
+            Authorization: "Bearer test-token"
+          expect:
+            - statusCode: 200
+          think: 1
+
+  # Mobile user simulation
+  - name: "Mobile User Flow"
+    weight: 15
+    flow:
+      - get:
+          url: "/"
+          headers:
+            User-Agent: "Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15"
+            Accept-Language: "hi-IN,en-IN;q=0.9"
+            Viewport: "375x667"
+          expect:
+            - statusCode: 200
+          think: 3
+
+      # Mobile search
+      - get:
+          url: "/api/tenders"
+          qs:
+            search: "{{ $randomPick(searchTerms) }}"
+            limit: 10  # Smaller page size for mobile
+          headers:
+            User-Agent: "Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15"
+            Authorization: "Bearer test-token"
+          expect:
+            - statusCode: 200
+
+  # User authentication flow
+  - name: "Authentication Flow"
+    weight: 5
+    flow:
+      # Login
+      - post:
+          url: "/api/auth/login"
+          json:
+            email: "test@example.com"
+            password: "TestPassword123!"
+          capture:
+            - json: "$.tokens.accessToken"
+              as: "authToken"
+          expect:
+            - statusCode: 200
+
+      # Access protected resource
+      - get:
+          url: "/api/user/favorites"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          expect:
+            - statusCode: 200
+
+  # Favorites functionality
+  - name: "Favorites Management"
+    weight: 5
+    flow:
+      # Add to favorites
+      - post:
+          url: "/api/tenders/{{ tenders.0.id }}/favorite"
+          headers:
+            Authorization: "Bearer test-token"
+          expect:
+            - statusCode: 200
+
+      # Get favorites list
+      - get:
+          url: "/api/user/favorites"
+          headers:
+            Authorization: "Bearer test-token"
+          expect:
+            - statusCode: 200
+
+      # Remove from favorites
+      - delete:
+          url: "/api/tenders/{{ tenders.0.id }}/favorite"
+          headers:
+            Authorization: "Bearer test-token"
+          expect:
+            - statusCode: 200
+
+# Custom functions for Indian market testing
+functions:
+  # Generate Indian phone number
+  generateIndianPhone: |
+    function() {
+      const prefixes = ['98', '99', '97', '96', '95', '94', '93', '92', '91', '90'];
+      const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+      const number = Math.floor(Math.random() * 100000000).toString().padStart(8, '0');
+      return `+91-${prefix}${number}`;
+    }
+
+  # Generate Indian GST number
+  generateGSTNumber: |
+    function() {
+      const stateCode = Math.floor(Math.random() * 37) + 1;
+      const panLike = Math.random().toString(36).substring(2, 12).toUpperCase();
+      const entityCode = Math.floor(Math.random() * 10);
+      const checksum = Math.floor(Math.random() * 36).toString(36).toUpperCase();
+      return `${stateCode.toString().padStart(2, '0')}${panLike}${entityCode}Z${checksum}`;
+    }
+
+  # Simulate slow network conditions (common in India)
+  simulateSlowNetwork: |
+    function(context, next) {
+      // Add random delay between 500ms to 2000ms
+      const delay = Math.floor(Math.random() * 1500) + 500;
+      setTimeout(next, delay);
+    }
+
+# Before and after hooks
+before:
+  flow:
+    - log: "Starting TenderMatch Pro load test"
+    - log: "Target: {{ $environment.target }}"
+    - log: "Test duration: {{ $environment.phases.length }} phases"
+
+after:
+  flow:
+    - log: "Load test completed"
+    - log: "Check Artillery report for detailed metrics"
+
+# Error handling
+on:
+  error:
+    - log: "Error occurred: {{ error.message }}"
+  
+  timeout:
+    - log: "Request timeout: {{ request.url }}"

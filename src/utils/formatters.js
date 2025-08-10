@@ -1,21 +1,49 @@
+// Enhanced Indian currency formatting with proper lakhs/crores
 export const formatCurrency = (amount) => {
   if (amount >= 10000000) {
-    return `₹${(amount / 10000000).toFixed(1)} Cr`;
+    return `₹${(amount / 10000000).toFixed(2)} Crore`;
   } else if (amount >= 100000) {
-    return `₹${(amount / 100000).toFixed(1)} L`;
+    return `₹${(amount / 100000).toFixed(2)} Lakh`;
   } else if (amount >= 1000) {
-    return `₹${(amount / 1000).toFixed(0)}K`;
+    return `₹${(amount / 1000).toFixed(0)} Thousand`;
   }
   return `₹${amount.toLocaleString('en-IN')}`;
 };
 
+// Indian date format (DD/MM/YYYY)
 export const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-IN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+};
+
+// Format date for display with month names
+export const formatDateDisplay = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-IN', {
     day: '2-digit',
     month: 'short',
     year: 'numeric'
   });
+};
+
+// Format currency in words (Indian style)
+export const formatCurrencyInWords = (amount) => {
+  const crores = Math.floor(amount / 10000000);
+  const lakhs = Math.floor((amount % 10000000) / 100000);
+  const thousands = Math.floor((amount % 100000) / 1000);
+  const hundreds = amount % 1000;
+
+  let result = '';
+  if (crores > 0) result += `${crores} Crore `;
+  if (lakhs > 0) result += `${lakhs} Lakh `;
+  if (thousands > 0) result += `${thousands} Thousand `;
+  if (hundreds > 0) result += `${hundreds}`;
+  
+  return `₹${result.trim()}`;
 };
 
 export const calculateDaysLeft = (deadlineString) => {

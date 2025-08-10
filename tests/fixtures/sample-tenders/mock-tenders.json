@@ -1,0 +1,381 @@
+{
+  "tenders": [
+    {
+      "id": "GEM/2024/B/12345",
+      "title": "Supply of IT Equipment for Government Office",
+      "description": "Procurement of laptops, desktops, printers, and networking equipment for the Information Technology Department. The equipment should meet government specifications and include warranty support.",
+      "department": "Information Technology",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "budget": 5000000,
+      "publishedDate": "2024-01-15",
+      "deadlineDate": "2024-02-15",
+      "status": "Active",
+      "category": "IT Equipment",
+      "eligibility": [
+        "Registered company with valid GST certificate",
+        "Minimum 3 years experience in IT equipment supply",
+        "Annual turnover of at least ₹2 crore",
+        "Valid trade license"
+      ],
+      "documents": [
+        {
+          "name": "Technical Specifications",
+          "filename": "tech_specs.pdf",
+          "size": "2.5 MB",
+          "required": true
+        },
+        {
+          "name": "Terms and Conditions",
+          "filename": "terms_conditions.pdf",
+          "size": "1.2 MB",
+          "required": true
+        }
+      ],
+      "importantDates": {
+        "publishDate": "2024-01-15",
+        "lastDateForQueries": "2024-01-25",
+        "preBidMeeting": "2024-01-30",
+        "submissionDeadline": "2024-02-15",
+        "technicalBidOpening": "2024-02-16",
+        "financialBidOpening": "2024-02-20"
+      }
+    },
+    {
+      "id": "GEM/2024/B/12346",
+      "title": "Construction of Primary School Building",
+      "description": "Construction of a new primary school building with 12 classrooms, administrative block, library, and playground facilities. The project includes civil work, electrical installations, and plumbing.",
+      "department": "Education",
+      "state": "Karnataka",
+      "city": "Bangalore",
+      "budget": 25000000,
+      "publishedDate": "2024-01-10",
+      "deadlineDate": "2024-02-10",
+      "status": "Closing Soon",
+      "category": "Construction",
+      "eligibility": [
+        "Class A contractor license",
+        "Minimum 5 years experience in school construction",
+        "Completed at least 3 similar projects",
+        "Valid environmental clearance"
+      ],
+      "documents": [
+        {
+          "name": "Architectural Drawings",
+          "filename": "architectural_plans.pdf",
+          "size": "15.8 MB",
+          "required": true
+        },
+        {
+          "name": "Structural Drawings",
+          "filename": "structural_plans.pdf",
+          "size": "12.3 MB",
+          "required": true
+        },
+        {
+          "name": "BOQ (Bill of Quantities)",
+          "filename": "boq.xlsx",
+          "size": "3.2 MB",
+          "required": true
+        }
+      ],
+      "importantDates": {
+        "publishDate": "2024-01-10",
+        "siteVisit": "2024-01-20",
+        "lastDateForQueries": "2024-01-25",
+        "submissionDeadline": "2024-02-10",
+        "technicalBidOpening": "2024-02-12",
+        "financialBidOpening": "2024-02-15"
+      }
+    },
+    {
+      "id": "GEM/2024/B/12347",
+      "title": "Medical Equipment for District Hospital",
+      "description": "Procurement of medical equipment including X-ray machines, ECG machines, patient monitors, and laboratory equipment for the district hospital upgrade project.",
+      "department": "Health and Family Welfare",
+      "state": "Tamil Nadu",
+      "city": "Chennai",
+      "budget": 15000000,
+      "publishedDate": "2024-01-20",
+      "deadlineDate": "2024-03-20",
+      "status": "Active",
+      "category": "Medical Equipment",
+      "eligibility": [
+        "ISO 13485 certified manufacturer or authorized dealer",
+        "FDA/CE approved equipment",
+        "Minimum 2 years warranty",
+        "Local service support availability"
+      ],
+      "documents": [
+        {
+          "name": "Equipment Specifications",
+          "filename": "medical_equipment_specs.pdf",
+          "size": "8.7 MB",
+          "required": true
+        },
+        {
+          "name": "Installation Requirements",
+          "filename": "installation_guide.pdf",
+          "size": "4.1 MB",
+          "required": true
+        }
+      ],
+      "importantDates": {
+        "publishDate": "2024-01-20",
+        "lastDateForQueries": "2024-02-20",
+        "preBidMeeting": "2024-02-25",
+        "submissionDeadline": "2024-03-20",
+        "technicalBidOpening": "2024-03-22",
+        "financialBidOpening": "2024-03-25"
+      }
+    },
+    {
+      "id": "GEM/2024/B/12348",
+      "title": "Road Construction and Maintenance Services",
+      "description": "Construction of 25 km rural road connecting villages to the main highway, including drainage systems, signage, and 5-year maintenance contract.",
+      "department": "Public Works Department",
+      "state": "Rajasthan",
+      "city": "Jaipur",
+      "budget": 45000000,
+      "publishedDate": "2024-01-05",
+      "deadlineDate": "2024-02-05",
+      "status": "Closed",
+      "category": "Infrastructure",
+      "eligibility": [
+        "Class A road construction license",
+        "Minimum 10 years experience",
+        "Completed roads worth ₹50 crore in last 5 years",
+        "Valid pollution control certificate"
+      ],
+      "documents": [
+        {
+          "name": "Road Design Drawings",
+          "filename": "road_design.pdf",
+          "size": "25.4 MB",
+          "required": true
+        },
+        {
+          "name": "Soil Investigation Report",
+          "filename": "soil_report.pdf",
+          "size": "6.8 MB",
+          "required": true
+        }
+      ],
+      "importantDates": {
+        "publishDate": "2024-01-05",
+        "siteVisit": "2024-01-15",
+        "lastDateForQueries": "2024-01-20",
+        "submissionDeadline": "2024-02-05",
+        "technicalBidOpening": "2024-02-06",
+        "financialBidOpening": "2024-02-08"
+      }
+    },
+    {
+      "id": "GEM/2024/B/12349",
+      "title": "Software Development for e-Governance Portal",
+      "description": "Development of a comprehensive e-governance portal for citizen services including online application submission, payment gateway integration, and mobile app development.",
+      "department": "Information Technology",
+      "state": "Gujarat",
+      "city": "Ahmedabad",
+      "budget": 8000000,
+      "publishedDate": "2024-01-25",
+      "deadlineDate": "2024-03-25",
+      "status": "Active",
+      "category": "Software Development",
+      "eligibility": [
+        "CMMI Level 3 or higher certification",
+        "Minimum 5 years experience in government projects",
+        "Team of at least 10 certified developers",
+        "ISO 27001 security certification"
+      ],
+      "documents": [
+        {
+          "name": "Functional Requirements",
+          "filename": "functional_requirements.pdf",
+          "size": "12.5 MB",
+          "required": true
+        },
+        {
+          "name": "Technical Architecture",
+          "filename": "tech_architecture.pdf",
+          "size": "8.9 MB",
+          "required": true
+        },
+        {
+          "name": "Security Guidelines",
+          "filename": "security_guidelines.pdf",
+          "size": "3.7 MB",
+          "required": true
+        }
+      ],
+      "importantDates": {
+        "publishDate": "2024-01-25",
+        "lastDateForQueries": "2024-02-15",
+        "preBidMeeting": "2024-02-20",
+        "submissionDeadline": "2024-03-25",
+        "technicalBidOpening": "2024-03-26",
+        "financialBidOpening": "2024-03-28"
+      }
+    },
+    {
+      "id": "GEM/2024/B/12350",
+      "title": "Office Furniture and Equipment Supply",
+      "description": "Supply of office furniture including desks, chairs, filing cabinets, and conference room equipment for the new government office complex.",
+      "department": "General Administration",
+      "state": "West Bengal",
+      "city": "Kolkata",
+      "budget": 3500000,
+      "publishedDate": "2024-02-01",
+      "deadlineDate": "2024-03-01",
+      "status": "Active",
+      "category": "Office Supplies",
+      "eligibility": [
+        "Authorized dealer or manufacturer",
+        "Minimum 2 years experience in office furniture supply",
+        "Quality certification for furniture",
+        "Delivery and installation capability"
+      ],
+      "documents": [
+        {
+          "name": "Furniture Catalog",
+          "filename": "furniture_catalog.pdf",
+          "size": "18.2 MB",
+          "required": true
+        },
+        {
+          "name": "Quality Certificates",
+          "filename": "quality_certificates.pdf",
+          "size": "2.8 MB",
+          "required": true
+        }
+      ],
+      "importantDates": {
+        "publishDate": "2024-02-01",
+        "lastDateForQueries": "2024-02-15",
+        "submissionDeadline": "2024-03-01",
+        "technicalBidOpening": "2024-03-02",
+        "financialBidOpening": "2024-03-05"
+      }
+    },
+    {
+      "id": "GEM/2024/B/12351",
+      "title": "Transportation Services for Government Employees",
+      "description": "Providing transportation services for government employees including daily commute buses, official vehicles, and emergency transport services for 2 years.",
+      "department": "Transport",
+      "state": "Haryana",
+      "city": "Gurgaon",
+      "budget": 12000000,
+      "publishedDate": "2024-01-30",
+      "deadlineDate": "2024-02-28",
+      "status": "Active",
+      "category": "Transportation",
+      "eligibility": [
+        "Valid transport license",
+        "Fleet of at least 20 vehicles",
+        "Valid insurance for all vehicles",
+        "GPS tracking system mandatory"
+      ],
+      "documents": [
+        {
+          "name": "Vehicle Details",
+          "filename": "vehicle_details.pdf",
+          "size": "5.4 MB",
+          "required": true
+        },
+        {
+          "name": "Route Plan",
+          "filename": "route_plan.pdf",
+          "size": "3.1 MB",
+          "required": true
+        }
+      ],
+      "importantDates": {
+        "publishDate": "2024-01-30",
+        "lastDateForQueries": "2024-02-10",
+        "submissionDeadline": "2024-02-28",
+        "technicalBidOpening": "2024-03-01",
+        "financialBidOpening": "2024-03-03"
+      }
+    },
+    {
+      "id": "GEM/2024/B/12352",
+      "title": "Consultancy Services for Digital Transformation",
+      "description": "Management consultancy services for digital transformation of government processes, including process re-engineering, technology assessment, and change management.",
+      "department": "Administrative Reforms",
+      "state": "Delhi",
+      "city": "New Delhi",
+      "budget": 6500000,
+      "publishedDate": "2024-02-05",
+      "deadlineDate": "2024-03-15",
+      "status": "Active",
+      "category": "Consultancy Services",
+      "eligibility": [
+        "Management consulting firm with 7+ years experience",
+        "Experience in government digital transformation",
+        "Team with certified project managers",
+        "Previous work with central/state government"
+      ],
+      "documents": [
+        {
+          "name": "Scope of Work",
+          "filename": "scope_of_work.pdf",
+          "size": "7.3 MB",
+          "required": true
+        },
+        {
+          "name": "Methodology",
+          "filename": "methodology.pdf",
+          "size": "4.6 MB",
+          "required": true
+        }
+      ],
+      "importantDates": {
+        "publishDate": "2024-02-05",
+        "lastDateForQueries": "2024-02-20",
+        "preBidMeeting": "2024-02-25",
+        "submissionDeadline": "2024-03-15",
+        "technicalBidOpening": "2024-03-16",
+        "financialBidOpening": "2024-03-18"
+      }
+    }
+  ],
+  "metadata": {
+    "totalTenders": 8,
+    "generatedAt": "2024-02-10T10:00:00Z",
+    "source": "test-fixtures",
+    "version": "1.0"
+  },
+  "statistics": {
+    "byState": {
+      "Maharashtra": 1,
+      "Karnataka": 1,
+      "Tamil Nadu": 1,
+      "Rajasthan": 1,
+      "Gujarat": 1,
+      "West Bengal": 1,
+      "Haryana": 1,
+      "Delhi": 1
+    },
+    "byCategory": {
+      "IT Equipment": 1,
+      "Construction": 1,
+      "Medical Equipment": 1,
+      "Infrastructure": 1,
+      "Software Development": 1,
+      "Office Supplies": 1,
+      "Transportation": 1,
+      "Consultancy Services": 1
+    },
+    "byStatus": {
+      "Active": 6,
+      "Closing Soon": 1,
+      "Closed": 1
+    },
+    "budgetRange": {
+      "min": 3500000,
+      "max": 45000000,
+      "average": 14000000,
+      "total": 112000000
+    }
+  }
+}
