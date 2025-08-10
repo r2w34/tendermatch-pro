@@ -7,17 +7,30 @@
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "crypto-js": "^4.2.0",
     "lucide-react": "^0.539.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.0",
     "react-scripts": "5.0.1",
+    "recharts": "^3.1.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "BROWSER=none HOST=0.0.0.0 PORT=53337 react-scripts start",
+    "start:prod": "serve -s build -l 3000",
     "build": "react-scripts build",
+    "build:analyze": "npm run build && npx webpack-bundle-analyzer build/static/js/*.js",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "eject": "react-scripts eject",
+    "lint": "eslint src --ext .js,.jsx",
+    "lint:fix": "eslint src --ext .js,.jsx --fix",
+    "format": "prettier --write src/**/*.{js,jsx,css,md}",
+    "docker:build": "docker build -t tendermatch-pro .",
+    "docker:run": "docker run -p 3000:3000 tendermatch-pro",
+    "deploy:staging": "npm run build && docker-compose -f docker-compose.staging.yml up -d",
+    "deploy:production": "npm run build && docker-compose -f docker-compose.yml up -d"
   },
   "eslintConfig": {
     "extends": [
@@ -36,5 +49,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "prettier": "^3.6.2",
+    "serve": "^14.2.4",
+    "webpack-bundle-analyzer": "^4.10.2"
   }
 }

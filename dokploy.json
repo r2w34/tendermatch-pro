@@ -1,0 +1,129 @@
+{
+  "name": "tendermatch-pro",
+  "description": "AI-powered government tender aggregation platform",
+  "version": "1.0.0",
+  "type": "docker-compose",
+  "repository": {
+    "url": "https://github.com/r2w34/tendermatch-pro.git",
+    "branch": "main"
+  },
+  "domains": [
+    {
+      "domain": "tendermatch.pro",
+      "ssl": true,
+      "redirect": false
+    },
+    {
+      "domain": "www.tendermatch.pro",
+      "ssl": true,
+      "redirect": true,
+      "redirectTo": "tendermatch.pro"
+    }
+  ],
+  "environment": {
+    "NODE_ENV": "production",
+    "DATABASE_URL": "${DATABASE_URL}",
+    "JWT_SECRET": "${JWT_SECRET}",
+    "GEMINI_API_KEY": "${GEMINI_API_KEY}",
+    "REDIS_URL": "${REDIS_URL}",
+    "RAZORPAY_KEY_ID": "${RAZORPAY_KEY_ID}",
+    "RAZORPAY_KEY_SECRET": "${RAZORPAY_KEY_SECRET}",
+    "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID}",
+    "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY}",
+    "AWS_REGION": "ap-south-1",
+    "S3_BUCKET_NAME": "${S3_BUCKET_NAME}",
+    "REACT_APP_API_URL": "https://api.tendermatch.pro",
+    "REACT_APP_GEMINI_API_KEY": "${REACT_APP_GEMINI_API_KEY}",
+    "REACT_APP_RAZORPAY_KEY_ID": "${RAZORPAY_KEY_ID}"
+  },
+  "services": {
+    "web": {
+      "build": ".",
+      "ports": ["3000:3000"],
+      "healthcheck": {
+        "test": ["CMD", "curl", "-f", "http://localhost:3000/"],
+        "interval": "30s",
+        "timeout": "10s",
+        "retries": 3
+      }
+    },
+    "api": {
+      "build": "./backend",
+      "ports": ["5000:5000"],
+      "healthcheck": {
+        "test": ["CMD", "curl", "-f", "http://localhost:5000/health"],
+        "interval": "30s",
+        "timeout": "10s",
+        "retries": 3
+      }
+    },
+    "db": {
+      "image": "postgres:14-alpine",
+      "volumes": ["postgres_data:/var/lib/postgresql/data"],
+      "environment": {
+        "POSTGRES_DB": "tenderdb",
+        "POSTGRES_USER": "${DB_USER}",
+        "POSTGRES_PASSWORD": "${DB_PASSWORD}"
+      }
+    },
+    "redis": {
+      "image": "redis:7-alpine",
+      "volumes": ["redis_data:/data"],
+      "command": "redis-server --appendonly yes"
+    }
+  },
+  "volumes": {
+    "postgres_data": {},
+    "redis_data": {}
+  },
+  "backup": {
+    "enabled": true,
+    "schedule": "0 2 * * *",
+    "retention": "30d",
+    "targets": ["postgres_data"]
+  },
+  "monitoring": {
+    "enabled": true,
+    "metrics": true,
+    "logs": true,
+    "alerts": {
+      "email": "admin@tendermatch.pro",
+      "webhook": "https://hooks.slack.com/your-webhook-url"
+    }
+  },
+  "scaling": {
+    "web": {
+      "min": 1,
+      "max": 5,
+      "cpu": 70,
+      "memory": 80
+    },
+    "api": {
+      "min": 1,
+      "max": 3,
+      "cpu": 70,
+      "memory": 80
+    }
+  },
+  "security": {
+    "ssl": {
+      "enabled": true,
+      "provider": "letsencrypt"
+    },
+    "firewall": {
+      "enabled": true,
+      "rules": [
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "source": "0.0.0.0/0"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "source": "0.0.0.0/0"
+        }
+      ]
+    }
+  }
+}
